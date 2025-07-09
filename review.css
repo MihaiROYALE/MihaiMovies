@@ -1,0 +1,152 @@
+/* =========================================================
+   MOVIE REVIEW PAGE — exclusive stylesheet
+   ========================================================= */
+
+/* ---------- Shared palette (matches main page) ---------- */
+:root{
+  --bg-gradient  : linear-gradient(135deg,#121212, #1C1C1E, #2A2A2E);
+  --sidebar-bg  : rgba(0,0,0,.30);
+  --text-color  : #ffffff;
+  --card-hover  : rgba(255,255,255,.12);
+}
+body.light{
+  --bg-gradient  : linear-gradient(135deg, #F5F5F7, #EDEDED, #DADADA);
+  --sidebar-bg  : rgba(0,0,0,.30);
+  --text-color  : #000000;
+  --card-hover  : rgba(255,255,255,.12);
+}
+
+/* ---------- Global reset & base ---------- */
+*,
+*::before,
+*::after{
+    box-sizing:border-box;
+    margin:0;
+    padding:0}
+
+html,body{
+    height:100%;
+    overflow-x:hidden}
+
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:var(--bg-gradient);
+  color:var(--text-color);
+  min-height:100vh;
+  transition:background .4s,color .4s;
+}
+
+/* =========================================================
+   SIDEBAR (logo + theme toggle) — search icon hidden
+   ========================================================= */
+.sidebar{
+  position:fixed;
+  inset:0 auto 0 0;
+  width:60px;height:100%;
+  background:var(--sidebar-bg);
+  backdrop-filter:blur(10px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:20px;
+  z-index:999;
+}
+.sidebar img.logo{
+  width:48px;
+  height:48px;
+  margin-bottom:32px;
+  cursor:pointer;
+  transition:transform .2s;
+}
+.sidebar img.logo:hover{transform:scale(1.1)}
+.sidebar .search-icon{display:none!important}   /* no search in reviews */
+
+/* theme toggle pinned to bottom */
+.sidebar .theme-toggle{
+  font-size:26px;
+  color:var(--text-color);
+  cursor:pointer;
+  opacity:.8;
+  transition:opacity .2s,transform .2s,color .4s;
+  margin-top:auto;
+  margin-bottom:10px;            /* bottom gap */
+}
+.sidebar .theme-toggle:hover{opacity:1;transform:scale(1.15)}
+
+/* =========================================================
+   BACK PILL
+   ========================================================= */
+.back{
+  position:absolute;
+  top:20px;
+  left:calc(70px + 20px);
+  background: linear-gradient(135deg,#c5c2d1,#cac8d4);
+  color:#000000!important;
+  text-decoration:none;
+  font-size:.85rem;
+  padding:6px 12px;
+  border-radius:20px;
+  opacity:0;
+  transform:translateY(-20px);
+  animation:fadeInTitle 1s forwards;
+}
+@keyframes fadeInTitle{to{opacity:1;transform:translateY(0)}}
+
+.back:hover,.back:visited{color:#fff}
+.back:active{transform:scale(.95)}
+
+/* =========================================================
+   CENTERED HEADING (same as main page)
+   ========================================================= */
+.container{
+  width: 100%;
+  max-width:none;
+  padding:20px;
+  margin-left:70px;
+}
+.container h1{
+  text-align:center;
+  font-size:2.8rem;
+  margin:40px 0;
+  margin-left: 35px;
+  opacity:0;
+  transform:translateY(-20px);
+  animation:fadeInTitle 1s forwards;
+}
+@keyframes fadeInTitle{to{opacity:1;transform:translateY(0)}}
+
+/* =========================================================
+   POSTER + REVIEW TEXT COLUMN
+   ========================================================= */
+.review-container{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:24px;
+  margin-left:70px;
+  padding-bottom:40px;
+  max-width:1000px;
+}
+.poster{
+  width:200px;
+  height:270px;
+  border-radius:12px;
+  object-fit:cover;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+.review-text p{
+  margin:6px 0 12px;
+  line-height:1.5;
+  font-size:1.05rem;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media(max-width:600px){
+  .container{margin-left:0}
+  .container h1{transform:none;font-size:2rem}
+  .review-container{margin-left:0;padding-left:20px}
+  .poster{width:150px;height:202px}
+  .back{left:20px}
+}
