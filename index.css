@@ -357,3 +357,82 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===============================================
+   EXTRA MOBILE OPTIMIZATION
+   =============================================== */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 50px;             /* slimmer sidebar */
+    padding-top: 10px;
+  }
+
+  .sidebar img.logo {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 20px;
+  }
+
+  .container {
+    margin-left: 55px;       /* adjust for smaller sidebar */
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    margin-left: 20px;
+  }
+
+  .movie-card {
+    flex: 0 0 160px;         /* slightly smaller cards */
+    max-width: 160px;
+  }
+
+  .poster {
+    width: 160px;
+    height: 230px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    position: fixed;
+    bottom: 0;               /* turn sidebar into bottom nav */
+    top: auto;
+    left: 0;
+    right: 0;
+    height: 55px;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 0 10px;
+  }
+
+  .sidebar img.logo {
+    display: none;           /* hide logo on very small screens */
+  }
+
+  .container {
+    margin-left: 0;          /* no left margin when sidebar is at bottom */
+    margin-bottom: 70px;     /* leave space for bottom nav */
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    margin-left: 0;
+  }
+
+  .movie-card {
+    flex: 0 0 140px;
+    max-width: 140px;
+  }
+
+  .poster {
+    width: 140px;
+    height: 200px;
+  }
+
+  .search-overlay {
+    padding: 20px 15px;
+  }
+}
