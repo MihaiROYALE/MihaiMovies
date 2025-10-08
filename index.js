@@ -189,24 +189,40 @@ if (logo)
   );
 
 /* =========================================================
-   7. SAVE + RESTORE SCROLL
-   ========================================================= */
+    7. SAVE + RESTORE LISTING STATE
+    ========================================================= */
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-/* save */
+/* throttle state saves to avoid excessive writes */
+let stateSaveTimer;
+function debouncedSaveState() {
+  clearTimeout(stateSaveTimer);
+  stateSaveTimer = setTimeout(saveListingState, 300);
+}
+
+/* save listing state: activeTab, searchText, scroll */
+function saveListingState() {
+  const row = document.querySelector('.movie-scroll'); // get current visible row
+  const activeTab = document.body.classList.contains('series-mode') ? 'series' : 'movies';
+  const searchText = document.body.classList.contains('searching') ? input.value : '';
+  const state = {
+    activeTab,
+    searchText,
+    scrollY: window.scrollY,
+    rowId: row?.dataset.rowid || row?.dataset.year || '',
+    scrollX: row?.scrollLeft || 0
+  };
+  sessionStorage.setItem('listingState:v1', JSON.stringify(state));
+}
+
+/* save on navigation (movie clicks) */
 document.querySelectorAll('.movie-card a').forEach(link => {
-  link.addEventListener('click', () => {
-    const row = link.closest('.movie-scroll');
-    sessionStorage.setItem(
-      'scrollState',
-      JSON.stringify({
-        y: window.scrollY,
-        row: row?.dataset.rowid || row?.dataset.year || '',
-        x: row?.scrollLeft || 0
-      })
-    );
-  });
+  link.addEventListener('click', saveListingState);
 });
+
+/* debounced save on scroll and search input changes */
+window.addEventListener('scroll', debouncedSaveState);
+input.addEventListener('input', debouncedSaveState);
 
 /* tag rows once */
 document.querySelectorAll('.year-row .movie-scroll').forEach((row, i) => {
@@ -217,26 +233,44 @@ document.querySelectorAll('.year-row .movie-scroll').forEach((row, i) => {
   }
 });
 
-/* restore */
-function restore() {
-  const raw = sessionStorage.getItem('scrollState');
+/* restore listing state on page load */
+function restoreListingState() {
+  const raw = sessionStorage.getItem('listingState:v1');
   if (!raw) return;
-  const { y, row, x } = JSON.parse(raw);
+  const state = JSON.parse(raw);
 
-  window.scrollTo(0, y || 0);
+  // Restore active tab
+  // Note: toggleArchive may change DOM, so call before scroll
+  if (state.activeTab === 'series' && !document.body.classList.contains('series-mode')) {
+    toggleArchive();
+  } else if (state.activeTab === 'movies' && document.body.classList.contains('series-mode')) {
+    toggleArchive();
+  }
 
-  /* two frames to ensure layout is ready */
-  requestAnimationFrame(() =>
-    requestAnimationFrame(() => {
-      const tgt = document.querySelector(`[data-rowid="${row}"]`);
-      if (tgt) tgt.scrollLeft = x || 0;
-    })
-  );
+  // Restore search
+  if (state.searchText) {
+    input.value = state.searchText;
+    document.body.classList.add('searching');
+    runFilter(); // populate results without focusing
+  }
+
+  // Restore scroll
+  // Note: Use setTimeout to wait for DOM layout after tab switch and sorting
+  // Caveat: Timing may vary; if content loads asynchronously, scroll may be off
+  window.scrollTo(0, state.scrollY || 0);
+  setTimeout(() => {
+    const tgt = document.querySelector(`[data-rowid="${state.rowId}"]`);
+    if (tgt) tgt.scrollLeft = state.scrollX || 0;
+  }, 100);
 }
+
 window.addEventListener('pageshow', e => {
-  if (e.persisted) restore();
+  if (e.persisted) restoreListingState(); // for bfcache
 });
-window.addEventListener('DOMContentLoaded', restore);
+/* restore after DOM ready and sorting */
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(restoreListingState, 50);
+});
 
 /* =========================================================
    8. ARCHIVE TOGGLE  (Movies ↔ Series)
@@ -265,3 +299,24 @@ function toggleArchive () {
   /* optional: close search overlay if open */
   if (body.classList.contains('searching')) closeSearch();
 }
+
+/* =========================================================
+   9. SORT MOVIE CARDS ALPHABETICALLY
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.year-row').forEach(section => {
+    const scrollDiv = section.querySelector('.movie-scroll');
+    if (!scrollDiv) return;
+
+    const cards = Array.from(scrollDiv.querySelectorAll('.movie-card'));
+    if (cards.length === 0) return;
+
+    cards.sort((a, b) => {
+      const titleA = a.querySelector('.movie-title').textContent.trim().toLowerCase();
+      const titleB = b.querySelector('.movie-title').textContent.trim().toLowerCase();
+      return titleA.localeCompare(titleB);
+    });
+
+    cards.forEach(card => scrollDiv.appendChild(card));
+  });
+});
