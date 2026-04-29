@@ -12,6 +12,33 @@
 <!-- Ionicons -->
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule     src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+<!-- Preload all posters for instant scroll loading -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var images = document.querySelectorAll('img.poster');
+  for (var i = 0; i < images.length; i++) {
+    var link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.as = 'image';
+    link.href = images[i].src;
+    document.head.appendChild(link);
+  }
+});
+</script>
+
+<!-- Immediate scroll restore for bfcache -->
+<script>
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted) {
+    const raw = sessionStorage.getItem('listingState:v1');
+    if (raw) {
+      const state = JSON.parse(raw);
+      window.scrollTo(0, state.scrollY || 0);
+    }
+  }
+});
+</script>
 </head>
 <body>
 
@@ -1171,6 +1198,22 @@
                     </a>
                     <p class="movie-title">Percy Jackson & the Olympians: The Lightning Thief</p>
                 </div>
+                                                                                                                
+                <div class="movie-card" data-rating="3">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Flipped.jpeg" alt="Flipped">
+                    </a>
+                    <p class="movie-title">Flipped</p>
+                </div>
+                                                                                                                      
+                <div class="movie-card" data-rating="3">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Shutter Island.jpeg" alt="Shutter Island">
+                    </a>
+                    <p class="movie-title">Shutter Island
+</p>
+                </div>
+                      
             </div>
     </section>
 
@@ -1700,7 +1743,7 @@
                                                                 
                 <div class="movie-card" data-rating="4">
                     <a href="nowyouseeme2.html">
-                        <img class="poster" src="Spider-Man 2.JPG" alt="The Amazing Spider-Man 2">
+                        <img class="poster" src="The Amazing Spider-Man 2.JPG" alt="The Amazing Spider-Man 2">
                     </a>
                     <p class="movie-title">The Amazing Spider-Man 2</p>
                 </div>
@@ -2014,6 +2057,14 @@
                     </a>
                     <p class="movie-title">X-Men: Apocalypse</p>
                 </div>
+
+                <div class="movie-card" data-rating="3">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Deepwater Horizon.jpeg" alt="Deepwater Horizon">
+                    </a>
+                    <p class="movie-title">Deepwater Horizon</p>
+                </div>
+                
             </div>
     </section>
 
@@ -2530,6 +2581,14 @@
                     </a>
                     <p class="movie-title">The Mandela Effect</p>
                 </div>
+                                                
+                <div class="movie-card" data-rating="4">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Guns Akimbo.jpeg" alt="Guns Akimbo">
+                    </a>
+                    <p class="movie-title">Guns Akimbo</p>
+                </div>
+
             </div>
     </section>
 
@@ -2662,6 +2721,13 @@
                         <img class="poster" src="Truth Seekers.jpg" alt="Truth Seekers">
                     </a>
                     <p class="movie-title">Truth Seekers</p>
+                </div>
+                            
+                <div class="movie-card" data-rating="3">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Outer Banks.jpeg" alt="Outer Banks">
+                    </a>
+                    <p class="movie-title">Outer Banks</p>
                 </div>
 
             </div>
@@ -3273,6 +3339,21 @@
                     </a>
                     <p class="movie-title">Wonka</p>
                 </div>
+
+                <div class="movie-card" data-rating="4">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Anyone But You.webp" alt="Anyone But You">
+                    </a>
+                    <p class="movie-title">Anyone But You</p>
+                </div>
+                
+                <div class="movie-card" data-rating="4">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Simulant.jpeg" alt="Simulant">
+                    </a>
+                    <p class="movie-title">Simulant</p>
+                </div>
+                
             </div>
     </section>
 
@@ -3610,6 +3691,34 @@
                     <p class="movie-title">Bad Guys 2</p>
                 </div>
 
+                <div class="movie-card" data-rating="4">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Avatar- Fire and Ash.jpeg" alt="Avatar: Fire and Ash">
+                    </a>
+                    <p class="movie-title">Avatar: Fire and Ash</p>
+                </div>
+                
+                <div class="movie-card" data-rating="4">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Zootopia 2.jpeg" alt="Zootopia 2">
+                    </a>
+                    <p class="movie-title">Zootopia 2</p>
+                </div>
+                
+                <div class="movie-card" data-rating="4">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Now You See Me- Now You Don't.webp" alt="Now You See Me: Now You Don't">
+                    </a>
+                    <p class="movie-title">Now You See Me: Now You Don't</p>
+                </div>
+                
+                <div class="movie-card" data-rating="4">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="The Running Man.jpeg" alt="The Running Man">
+                    </a>
+                    <p class="movie-title">The Running Man</p>
+                </div>
+
             </div>
     </section>
 
@@ -3628,7 +3737,82 @@
             </div>
     </section>
 
-  </div><!-- /.container -->
+
+    <!-- === 2026 === -->
+    <section class="year-row" data-type="movie">
+        <h2>2026</h2>
+            <div class="movie-scroll">
+                <div class="movie-card" data-rating="3">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Anaconda.webp" alt="Anaconda">
+                    </a>
+                    <p class="movie-title">Anaconda</p>
+                </div>
+
+                <div class="movie-card" data-rating="4">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Cold Storage.webp" alt="Cold Storage">
+                    </a>
+                    <p class="movie-title">Cold Storage</p>
+                </div>
+
+                <div class="movie-card" data-rating="5">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Hoppers.jpg" alt="Hoppers">
+                    </a>
+                    <p class="movie-title">Hoppers</p>
+                </div>
+
+                <div class="movie-card" data-rating="4">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Project Hail Mary.webp" alt="Project Hail Mary">
+                    </a>
+                    <p class="movie-title">Project Hail Mary</p>
+                </div>
+
+                <div class="movie-card" data-rating="4">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Scream 7.jpg" alt="Scream 7">
+                    </a>
+                    <p class="movie-title">Scream 7</p>
+                </div>
+
+                <div class="movie-card" data-rating="5">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="the housemaid.webp" alt="the housemaid">
+                    </a>
+                    <p class="movie-title">The Housemaid</p>
+                </div>
+
+                <div class="movie-card" data-rating="4">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="The Legend of Aang- The Last Airbender.jpg" alt="The Legend of Aang: The Last Airbender">
+                    </a>
+                    <p class="movie-title">The Legend of Aang: The Last Airbender</p>
+                </div>
+
+                <div class="movie-card" data-rating="4">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="the wrecking crew.jpg" alt="the wrecking crew">
+                    </a>
+                    <p class="movie-title">The Wrecking Crew</p>
+                </div>
+            </div>
+    </section>
+
+    <section class="year-row" data-type="series">
+        <h2>2026</h2>
+            <div class="movie-scroll">
+
+                            
+                <div class="movie-card" data-rating="5">
+                    <a href="nowyouseeme2.html">
+                        <img class="poster" src="Stranger Things- Tales from 85.jpg" alt="Stranger Things: Tales from 85">
+                    </a>
+                    <p class="movie-title">Stranger Things: Tales from 85</p>
+                </div>
+            </div>
+    </section>
 
   <!-- Main JS -->
   <script src="index.js"></script>
