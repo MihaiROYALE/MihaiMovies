@@ -275,6 +275,32 @@ document.addEventListener('DOMContentLoaded', () => {
 /* =========================================================
    8. ARCHIVE TOGGLE  (Movies ↔ Series)
    ========================================================= */
+function sortMoviesInSection(section) {
+  const scrollDiv = section.querySelector('.movie-scroll');
+  if (!scrollDiv) return;
+
+  const cards = Array.from(scrollDiv.querySelectorAll('.movie-card'));
+  if (cards.length === 0) return;
+
+  cards.sort((a, b) => {
+    const titleA = a.querySelector('.movie-title').textContent.trim().toLowerCase();
+    const titleB = b.querySelector('.movie-title').textContent.trim().toLowerCase();
+    return titleA.localeCompare(titleB);
+  });
+
+  cards.forEach(card => scrollDiv.appendChild(card));
+}
+
+function sortAllSections() {
+  document.querySelectorAll('.year-row').forEach(section => {
+    sortMoviesInSection(section);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  sortAllSections();
+});
+
 function toggleArchive () {
   const body   = document.body;
   const title  = document.querySelector('h1');
@@ -287,36 +313,15 @@ function toggleArchive () {
     ? "Mihai's Series Archive"
     : "Mihai's Movie Archive";
 
-  /* change icon & tooltip */
   if (toSeries) {
-    toggle.name  = 'film-outline';      // icon now says “Movies”
+    toggle.name  = 'film-outline';
     toggle.title = 'Switch to movies';
   } else {
-    toggle.name  = 'tv-outline';        // icon now says “Series”
+    toggle.name  = 'tv-outline';
     toggle.title = 'Switch to series';
   }
 
-  /* optional: close search overlay if open */
   if (body.classList.contains('searching')) closeSearch();
+  
+  setTimeout(sortAllSections, 10);
 }
-
-/* =========================================================
-   9. SORT MOVIE CARDS ALPHABETICALLY
-   ========================================================= */
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.year-row').forEach(section => {
-    const scrollDiv = section.querySelector('.movie-scroll');
-    if (!scrollDiv) return;
-
-    const cards = Array.from(scrollDiv.querySelectorAll('.movie-card'));
-    if (cards.length === 0) return;
-
-    cards.sort((a, b) => {
-      const titleA = a.querySelector('.movie-title').textContent.trim().toLowerCase();
-      const titleB = b.querySelector('.movie-title').textContent.trim().toLowerCase();
-      return titleA.localeCompare(titleB);
-    });
-
-    cards.forEach(card => scrollDiv.appendChild(card));
-  });
-});
